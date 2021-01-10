@@ -1,0 +1,177 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <!----------------------------- Main Site Section ------------------------------>
+
+    <main>
+
+        <!------------------------ Site Title ---------------------->
+
+        <section class="site-title">
+            <div class="site-background" data-aos="fade-up" data-aos-delay="100">
+                <h3>Tours & Travels</h3>
+                <h1>Amazing Place on Earth</h1>
+                <button class="btn">Explore</button>
+            </div>
+        </section>
+
+        <!------------x----------- Site Title ----------x----------->
+
+        <!-- --------------------- Blog Carousel ----------------- -->
+        <!-- 
+        <section>
+            <div class="blog">
+                <div class="container">
+                    <div class="owl-carousel owl-theme blog-post">
+                        <div class="blog-content" data-aos="fade-right" data-aos-delay="200">
+                            <img src="./assets/Blog-post/post-1.jpg" alt="post-1">
+                            <div class="blog-title">
+                                <h3>London Fashion week's continued the evolution</h3>
+                                <button class="btn btn-blog">Fashion</button>
+                                <span>2 minutes</span>
+                            </div>
+                        </div>
+               
+                    </div>
+                    <div class="owl-navigation">
+                        <span class="owl-nav-prev"><i class="fas fa-long-arrow-alt-left"></i></span>
+                        <span class="owl-nav-next"><i class="fas fa-long-arrow-alt-right"></i></span>
+                    </div>
+                </div>
+            </div>
+        </section> -->
+
+        <!-- ----------x---------- Blog Carousel --------x-------- -->
+
+        <!-- ---------------------- Site Content -------------------------->
+
+        <br><br><br>
+        <section class="container">
+            <div class="site-content">
+                <div class="posts">
+                   {% for post in posts %}
+                    <div class="post-content" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="post-image">
+                            <div>
+                                {% if post.image %}
+                                <img src="{{ post.image.url }}" class="img" alt="blog1">
+                                {% else %}
+                                <br>
+                                {% endif %}
+                            </div>
+                            <div class="post-info flex-row">
+                                <span><i class="fas fa-user text-gray"></i>&nbsp;&nbsp;{{post.user}}</span>
+                                <span><i class="fas fa-calendar-alt text-gray"></i>&nbsp;&nbsp;{{post.publishing_date}}</span>
+                                <span>2 Commets</span>
+                            </div>
+                        </div>
+                        <div class="post-title">
+                            <a href="#">{{post.title}}</a>
+                            <p>{{post.content|truncatechars:50}}
+                            </p>
+                            <a href="{{post.get_absolute_url}}" class="btn post-btn">Read More &nbsp; <i class="fas fa-arrow-right"></i></a>
+                        </div>
+                    </div>
+                    <hr>
+                   {% endfor %}
+           
+                    <div class="pagination flex-row">
+
+                        {% if posts.has_previous %}
+                        <a href="?page={{ posts.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}" class="pages"><i class="fas fa-chevron-left"></i></a>
+                        {% endif %}
+
+                        <span class="current">
+                            Sayfa {{ posts.number }} of {{ posts.paginator.num_pages }}.
+                        </span>
+
+                        {% if posts.has_next %}
+                        <a href="?page={{ posts.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"><i class="fas fa-chevron-right"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+                <aside class="sidebar">
+                    <div class="category">
+                        <h2>Category</h2>
+                        <ul class="category-list">
+                            {% for item in cat %}
+                            <li class="list-items" data-aos="fade-left" data-aos-delay="100">
+                              
+                                <a href="{% url 'category_show' category_slug=item.slug %}">{{item.title}}</a>
+                                <br><br>
+                                <!-- <span>(05)</span> -->
+                              
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="category">
+                        <h2>Search</h2>
+                        <ul class="category-list">
+                            <form action="" method="GET" role="search" >
+                            <li class="list-items" data-aos="fade-left" data-aos-delay="100">
+                                <input type="text" style="border: none; background: transparent; width:max-content" name="q" placeholder="Search" value="{{ request.GET.q }}">
+                                <input type="submit" value="Ara">
+                            </li>
+                             </form>
+                        </ul>
+                    </div>
+                    <div class="popular-post">
+                        <h2>Popular Post</h2>
+                        {% for item in popular_list %}
+                        <div class="post-content" data-aos="flip-up" data-aos-delay="200">
+                            <div class="post-image">
+                                <div>
+                                    {% if item.image %}
+                                    <img src="{{ item.image.url }}" class="img" alt="blog1">
+                                    {% else %}
+                                    <br>
+                                    {% endif %}
+                                </div>
+                                <div class="post-info flex-row">
+                                    <span><i class="fas fa-calendar-alt text-gray"></i>&nbsp;&nbsp;{{item.publishing_date}}</span>
+                                    <!-- <span>2 Commets</span> -->
+                                </div>
+                            </div>
+                            <div class="post-title">
+                                <a href="{{item.get_absolute_url}}">{{item.title}}</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- <div class="newsletter" data-aos="fade-up" data-aos-delay="300">
+                        <h2>Newsletter</h2>
+                        <div class="form-element">
+                            <input type="text" class="input-element" placeholder="Email">
+                            <button class="btn form-btn">Subscribe</button>
+                        </div>
+                    </div>
+                    <div class="popular-tags">
+                        <h2>Popular Tags</h2>
+                        <div class="tags flex-row">
+                            <span class="tag" data-aos="flip-up" data-aos-delay="100">Software</span>
+                            <span class="tag" data-aos="flip-up" data-aos-delay="200">technology</span>
+                            <span class="tag" data-aos="flip-up" data-aos-delay="300">travel</span>
+                            <span class="tag" data-aos="flip-up" data-aos-delay="400">illustration</span>
+                            <span class="tag" data-aos="flip-up" data-aos-delay="500">design</span>
+                            <span class="tag" data-aos="flip-up" data-aos-delay="600">lifestyle</span>
+                            <span class="tag" data-aos="flip-up" data-aos-delay="700">love</span>
+                            <span class="tag" data-aos="flip-up" data-aos-delay="800">project</span>
+                        </div>
+                    </div> -->
+                </aside>
+            </div>
+        </section>
+
+        <!-- -----------x---------- Site Content -------------x------------>
+
+    </main>
+
+    <!---------------x------------- Main Site Section ---------------x-------------->
+
+
+ {% endblock %}
